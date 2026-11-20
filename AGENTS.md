@@ -9,10 +9,18 @@ This repo is Mary Crocamo's **design prototype workbench**: a landing page that 
 ## Repo layout
 
 ```
-index.html                  Landing page (all HTML, CSS, JS in one file)
+index.html                  Landing page (card list, card styles, card rendering)
+assets/site.css             Shared themes (personal / PBS, light / dark), header, footer, layout
+assets/prefs.js             Applies the saved style and theme before the page draws (load in <head>)
+assets/site.js              Wires the "◑ Theme" button and the "PBS-ify this page" / "Make it Mary" link
 .nojekyll                   Tells GitHub Pages to serve files as-is
 <prototype-name>/index.html One folder per prototype, served at /<prototype-name>/
+tts-guidelines/             CTV Screen-Reader / TTS Style Guide: index.html renders tts-guidelines.md
 ```
+
+**Pages built on the workbench** (rather than self-contained prototypes, such as the TTS guide) should link `../assets/site.css`, `../assets/prefs.js` and `../assets/site.js`, and use the same header and footer markup, so they match the current theme.
+
+**The TTS guide's content lives only in `tts-guidelines/tts-guidelines.md`.** The page renders that file in the browser (with `marked` from cdnjs, pinned to 12.0.2), and the "Download as Markdown" button downloads the same file. To update the guide, replace or edit the `.md` file and also update the version and date shown in `tts-guidelines/index.html`.
 
 Some prototypes live in other repos and are linked by full URL:
 
