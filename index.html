@@ -138,7 +138,7 @@
   .toolbtn:hover{background:var(--ink);color:var(--bg)}
 
   /* quiet footer with the style switch */
-  .pagefoot{width:100%;max-width:1040px;margin:0 auto;padding:8px 24px 32px}
+  .pagefoot{width:calc(100% - 48px);max-width:992px;margin:0 auto;padding:18px 0 32px;border-top:1px solid var(--line)}
   .stylelink{font:inherit;font-size:12px;color:var(--ink-3);cursor:pointer;background:none;border:0;padding:4px 0;
     text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;
     transition:color .2s ease, text-decoration-color .2s ease}
@@ -202,7 +202,7 @@
     .card{padding:24px 20px 20px}
     .card h2{font-size:28px}
     .card p{font-size:calc(var(--desc-size) - 1px)}
-    .pagefoot{padding:4px 16px 28px}
+    .pagefoot{width:calc(100% - 32px);padding:16px 0 28px}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -231,7 +231,7 @@
   </main>
 
   <footer class="pagefoot">
-    <button class="stylelink" id="styleBtn" type="button">View in PBS style</button>
+    <button class="stylelink" id="styleBtn" type="button">PBS-ify this page</button>
   </footer>
 
   <script>
@@ -297,7 +297,7 @@
       function setBrand(b, save){
         if(b==="pbs") document.documentElement.setAttribute("data-brand","pbs");
         else document.documentElement.removeAttribute("data-brand");
-        styleBtn.textContent = b==="pbs" ? "View in personal style" : "View in PBS style";
+        styleBtn.textContent = b==="pbs" ? "Un-PBS-ify this page" : "PBS-ify this page";
         if(save){ try{ localStorage.setItem("proto-brand", b); }catch(e){} }
       }
       setBrand(isPbs()?"pbs":"personal", false);
