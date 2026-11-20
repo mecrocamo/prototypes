@@ -133,17 +133,16 @@
     line-height:1.15;text-decoration:none;display:flex;flex-direction:column;white-space:nowrap}
   .wordmark .sub{font-family:var(--f-body);font-size:11px;font-weight:600;
     letter-spacing:.34em;color:var(--ink-2);margin-top:3px}
-  .tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
   .toolbtn{font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;flex-shrink:0;
     background:transparent;border:1.5px solid var(--ink);border-radius:100px;padding:8px 16px}
   .toolbtn:hover{background:var(--ink);color:var(--bg)}
 
-  /* Personal | PBS style switch */
-  .seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:100px;padding:2px}
-  .seg button{font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;
-    background:transparent;border:0;border-radius:100px;padding:6px 14px}
-  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
-  .seg button:not([aria-pressed="true"]):hover{background:var(--line)}
+  /* quiet footer with the style switch */
+  .pagefoot{width:100%;max-width:1040px;margin:0 auto;padding:8px 24px 32px}
+  .stylelink{font:inherit;font-size:12px;color:var(--ink-3);cursor:pointer;background:none;border:0;padding:4px 0;
+    text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;
+    transition:color .2s ease, text-decoration-color .2s ease}
+  .stylelink:hover{color:var(--ink);text-decoration-color:currentColor}
 
   .wrap{width:100%;max-width:1040px;margin:0 auto;padding:44px 24px 64px;flex:1;
     display:flex;flex-direction:column}
@@ -203,7 +202,7 @@
     .card{padding:24px 20px 20px}
     .card h2{font-size:28px}
     .card p{font-size:calc(var(--desc-size) - 1px)}
-    .nav{align-items:flex-start}
+    .pagefoot{padding:4px 16px 28px}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -220,13 +219,7 @@
 <body>
   <header class="nav">
     <a class="wordmark" href="./">MARY CROCAMO<span class="sub">WORKBENCH</span></a>
-    <div class="tools">
-      <div class="seg" role="group" aria-label="Style">
-        <button type="button" data-brand-opt="personal" aria-pressed="true">Personal</button>
-        <button type="button" data-brand-opt="pbs" aria-pressed="false">PBS</button>
-      </div>
-      <button class="toolbtn" id="themeBtn" type="button">◑ Theme</button>
-    </div>
+    <button class="toolbtn" id="themeBtn" type="button">◑ Theme</button>
   </header>
 
   <main class="wrap">
@@ -236,6 +229,10 @@
     <div class="count" id="count"></div>
     <div class="cards" id="cards"></div>
   </main>
+
+  <footer class="pagefoot">
+    <button class="stylelink" id="styleBtn" type="button">View in PBS style</button>
+  </footer>
 
   <script>
     /*
@@ -294,16 +291,17 @@
       }
       var s=stored(); if(s) document.documentElement.setAttribute("data-theme",s);
 
-      /* Personal | PBS style switch (remembered per viewer; ?style=pbs in the URL forces it) */
-      var segBtns=[].slice.call(document.querySelectorAll("[data-brand-opt]"));
+      /* Footer style switch: personal <-> PBS (remembered per viewer; ?style=pbs in the URL forces it) */
+      var styleBtn=document.getElementById("styleBtn");
+      function isPbs(){ return document.documentElement.getAttribute("data-brand")==="pbs"; }
       function setBrand(b, save){
         if(b==="pbs") document.documentElement.setAttribute("data-brand","pbs");
         else document.documentElement.removeAttribute("data-brand");
-        segBtns.forEach(function(x){ x.setAttribute("aria-pressed", String(x.getAttribute("data-brand-opt")===(b==="pbs"?"pbs":"personal"))); });
+        styleBtn.textContent = b==="pbs" ? "View in personal style" : "View in PBS style";
         if(save){ try{ localStorage.setItem("proto-brand", b); }catch(e){} }
       }
-      setBrand(document.documentElement.getAttribute("data-brand")==="pbs"?"pbs":"personal", false);
-      segBtns.forEach(function(x){ x.addEventListener("click",function(){ setBrand(x.getAttribute("data-brand-opt"), true); }); });
+      setBrand(isPbs()?"pbs":"personal", false);
+      styleBtn.addEventListener("click",function(){ setBrand(isPbs()?"personal":"pbs", true); });
 
       btn.addEventListener("click",function(){
         var next=current()==="dark"?"light":"dark";
