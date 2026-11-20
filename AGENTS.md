@@ -14,7 +14,10 @@ index.html                  Landing page (all HTML, CSS, JS in one file)
 <prototype-name>/index.html One folder per prototype, served at /<prototype-name>/
 ```
 
-Some prototypes live in other repos and are linked by full URL. For example, Moods in Media Manager lives in `mecrocamo/personalization`.
+Some prototypes live in other repos and are linked by full URL:
+
+- Moods in Media Manager: `mecrocamo/personalization`
+- TeamCraft + Design Skills, Design Versioning Playbook, and VPPA Consent Modal: `mecrocamo/starman-mary`
 
 ## Adding a prototype
 
@@ -41,7 +44,7 @@ Some prototypes live in other repos and are linked by full URL. For example, Moo
 |---|---|
 | CTV | `periwinkle` |
 | Consoles | `coral` |
-| (next product) | `marigold` |
+| Design Ops | `marigold` |
 | (next product) | `blush` |
 
 If a fifth product is needed, add a new color to both themes (see Styling) instead of reusing one.
