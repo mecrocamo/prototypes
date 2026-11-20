@@ -2,18 +2,21 @@
 <title>Hero Motion Comparison</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: view switch + shared controls, then one or two synced 16:9 CTV stages, then short notes per option */
 :root{
   --bg:#f3f4f9; --panel:#ffffff; --fg:#141a33; --muted:#5b6385; --line:#dde1ee;
-  --accent:#2638c4; --onaccent:#ffffff;
+  --accent:#2638c4; --onaccent:#ffffff; --exit:#d0613f; --enter:#1f8f78; --state:#7d84a3;
   --sans:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0b0f22; --panel:#141a33; --fg:#e9ecf7; --muted:#9aa2c4; --line:#262e52; --accent:#8f9dff; --onaccent:#0b0f22; color-scheme:dark}}
+  --bg:#0b0f22; --panel:#141a33; --fg:#e9ecf7; --muted:#9aa2c4; --line:#262e52; --accent:#8f9dff; --onaccent:#0b0f22;
+  --exit:#ef8a69; --enter:#4cc7a9; --state:#8f96b8; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0b0f22; --panel:#141a33; --fg:#e9ecf7; --muted:#9aa2c4; --line:#262e52; --accent:#8f9dff; --onaccent:#0b0f22; color-scheme:dark}
+  --bg:#0b0f22; --panel:#141a33; --fg:#e9ecf7; --muted:#9aa2c4; --line:#262e52; --accent:#8f9dff; --onaccent:#0b0f22;
+  --exit:#ef8a69; --enter:#4cc7a9; --state:#8f96b8; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.5;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
@@ -25,7 +28,7 @@ h1{font-size:20px;font-weight:800;margin:0;letter-spacing:-.01em}
 .spacer{flex:1}
 button{font:inherit;font-size:14px;font-weight:700;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}
 button.primary{background:var(--accent);border-color:var(--accent);color:var(--onaccent)}
-button:focus-visible,input:focus-visible,.tvframe:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button:focus-visible,input:focus-visible,select:focus-visible,.tvframe:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
 .seg button{border:0;background:transparent;border-radius:7px;padding:6px 12px;color:var(--muted)}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--onaccent)}
@@ -48,6 +51,31 @@ figcaption span{font-weight:400;font-size:13px;color:var(--muted)}
 .card h2{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
 .card ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:14px}
 .hint{font-size:12px;color:var(--muted);margin:0}
+
+/* Slide view only: editable motion spec, timing fields and choreography timeline */
+.extras{display:flex;flex-direction:column;gap:16px}
+.extras .card h2{margin-bottom:12px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.spechead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.extras .spechead h2{margin:0}
+.spec{font:400 13px/1.6 var(--mono);white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:0 0 8px;overflow-x:auto}
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px 14px}
+.f label{display:block;font-size:12px;color:var(--muted);margin-bottom:3px}
+.f input,.f select{width:100%;font:500 14px var(--mono);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+.tl{position:relative;font-size:12px}
+.tl .row{display:grid;grid-template-columns:110px minmax(0,1fr);align-items:center;gap:10px;height:26px}
+.tl .lab{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl .track{position:relative;height:16px}
+.tl .blk{position:absolute;top:0;height:16px;border-radius:4px;opacity:.9}
+.tl .blk.exit{background:var(--exit)} .tl .blk.enter{background:var(--enter)} .tl .blk.state{background:var(--state)}
+.tl .blk.mark{width:3px;border-radius:2px}
+.axis{display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px;margin-top:4px}
+.axis .ticks{position:relative;height:16px;border-top:1px solid var(--line);font:400 11px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.axis .ticks span{position:absolute;top:2px;transform:translateX(-50%)}
+.playhead{position:absolute;top:0;bottom:0;width:2px;background:var(--fg);opacity:0;pointer-events:none}
+.legend{display:flex;gap:14px;margin-top:10px;color:var(--muted);font-size:12px;flex-wrap:wrap}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 
 /* TV stage, drawn at 1920x1080 and scaled to fit */
 .tvframe{position:relative;width:100%;max-width:100%;aspect-ratio:16/9;background:#020828;border-radius:10px;overflow:hidden}
@@ -96,7 +124,7 @@ figcaption span{font-weight:400;font-size:13px;color:var(--muted)}
       <div class="tvframe" tabindex="0" aria-label="Crossfade preview. Use left and right arrow keys to change slides."><div class="stage"></div></div>
     </figure>
     <figure id="p-slide">
-      <figcaption>Slide <span>~850ms transition</span></figcaption>
+      <figcaption>Slide <span id="slide-cap">~850ms transition</span></figcaption>
       <div class="tvframe" tabindex="0" aria-label="Slide preview. Use left and right arrow keys to change slides."><div class="stage"></div></div>
     </figure>
   </div>
@@ -121,6 +149,26 @@ figcaption span{font-weight:400;font-size:13px;color:var(--muted)}
       </ul>
     </div>
   </div>
+
+  <section class="extras" id="extras" hidden>
+    <div class="card">
+      <div class="spechead"><h2>Motion spec</h2><div class="bar"><button id="reset">Reset to spec</button><button id="copy">Copy</button></div></div>
+      <pre class="spec" id="spec"></pre>
+      <p class="hint">Changing the timings below updates the slide preview and this text.</p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h2>Try other timings</h2>
+        <div class="fields" id="fields"></div>
+      </div>
+      <div class="card">
+        <h2>Choreography</h2>
+        <div class="tl" id="tl"><div class="playhead" id="playhead"></div></div>
+        <div class="axis"><span></span><div class="ticks" id="ticks"></div></div>
+        <div class="legend"><span><b style="background:var(--exit)"></b>Exit</span><span><b style="background:var(--enter)"></b>Enter</span><span><b style="background:var(--state)"></b>State change</span></div>
+      </div>
+    </div>
+  </section>
   <p class="hint">Slides 4 to 6 repeat slides 1 to 3. Slides 3 and 6 use placeholder copy. With reduced motion turned on in your system settings, both options use a 300ms crossfade.</p>
 </div>
 
@@ -135,6 +183,18 @@ const DWELL=9000;
 const EZ={in:"cubic-bezier(.4,0,1,1)",out:"cubic-bezier(0,0,.2,1)",inout:"cubic-bezier(.4,0,.2,1)",expo:"cubic-bezier(.16,1,.3,1)"};
 const reducedMQ=matchMedia("(prefers-reduced-motion: reduce)");
 const $=id=>document.getElementById(id);
+
+/* Slide timings, editable in the Slide view. DEF is the approved spec. */
+const DEF={slideDur:850,slideEase:"ease-out-expo",dimTo:1,fadeOut:180,travel:120,textStart:240,textDur:600,stagger:40,textEase:"ease-out-expo",dotAt:300};
+let P=Object.assign({},DEF);
+const EASES={"ease-out-expo":"cubic-bezier(.16,1,.3,1)","ease-out-quart":"cubic-bezier(.25,1,.5,1)","ease-in-out":"cubic-bezier(.65,0,.35,1)","ease-out":"cubic-bezier(0,0,.2,1)","ease-in":"cubic-bezier(.4,0,1,1)","linear":"linear"};
+const FIELDS=[
+  ["slideDur","Slide duration","ms"],["slideEase","Slide easing","ease"],["dimTo","Outgoing art dims to","x"],
+  ["fadeOut","Outgoing text fade","ms"],["travel","Text parallax travel","px"],
+  ["textStart","Incoming text start","ms"],["textDur","Text duration each","ms"],["stagger","Text stagger","ms"],["textEase","Text easing","ease"],
+  ["dotAt","Dot switch at","ms"]
+];
+function totalMs(){return Math.max(P.slideDur,P.fadeOut,P.textStart+3*P.stagger+P.textDur,P.dotAt)}
 
 function makeStage(fig,type){
   const frame=fig.querySelector(".tvframe"),stage=fig.querySelector(".stage");
@@ -171,11 +231,13 @@ function transition(S,n,dir){
     items.forEach((el,i)=>A(el,[{opacity:0,transform:"translateY(24px)"},{opacity:1,transform:"translateY(0)"}],{duration:300,delay:300+i*60,easing:EZ.out}));
     dotAt(100);
   }else{
-    A(oldArt,[{transform:"translateX(0)"},{transform:"translateX("+(-dir*1920)+"px)"}],{duration:850,easing:EZ.expo});
-    cleanup(A(art,[{transform:"translateX("+(dir*1920)+"px)"},{transform:"translateX(0)"}],{duration:850,easing:EZ.expo}));
-    A(oldMeta,[{opacity:1,transform:"translateX(0)"},{opacity:0,transform:"translateX("+(-dir*120)+"px)"}],{duration:180,easing:EZ.in});
-    items.forEach((el,i)=>A(el,[{opacity:0,transform:"translateX("+(dir*120)+"px)"},{opacity:1,transform:"translateX(0)"}],{duration:600,delay:240+i*40,easing:EZ.expo}));
-    dotAt(300);
+    const E=EASES[P.slideEase],T=P.travel;
+    A(oldArt,[{transform:"translateX(0)",filter:"brightness(1)"},{transform:"translateX("+(-dir*1920)+"px)",filter:"brightness("+P.dimTo+")"}],{duration:P.slideDur,easing:E});
+    cleanup(A(art,[{transform:"translateX("+(dir*1920)+"px)"},{transform:"translateX(0)"}],{duration:P.slideDur,easing:E}));
+    A(oldMeta,[{opacity:1,transform:"translateX(0)"},{opacity:0,transform:"translateX("+(-dir*T)+"px)"}],{duration:P.fadeOut,easing:EZ.in});
+    items.forEach((el,i)=>A(el,[{opacity:0,transform:"translateX("+(dir*T)+"px)"},{opacity:1,transform:"translateX(0)"}],{duration:P.textDur,delay:P.textStart+i*P.stagger,easing:EASES[P.textEase]}));
+    dotAt(P.dotAt);
+    sweep(totalMs());
   }
 }
 
@@ -204,7 +266,64 @@ function setView(v){
   $("panes").classList.toggle("single",single);$("notes").classList.toggle("single",single);
   $("p-crossfade").hidden=v==="slide";$("n-crossfade").hidden=v==="slide";
   $("p-slide").hidden=v==="crossfade";$("n-slide").hidden=v==="crossfade";
+  /* The Slide view swaps the short notes for the full spec, timing fields and choreography */
+  $("notes").hidden=v==="slide";$("extras").hidden=v!=="slide";
+  if(v==="slide")drawTL();
 }
+
+/* Choreography timeline */
+const tl=$("tl"),ph=$("playhead");
+function span(){return Math.max(900,Math.ceil(totalMs()/100)*100+100)}
+function drawTL(){
+  tl.querySelectorAll(".row").forEach(r=>r.remove());
+  const S=span(),pct=v=>(v/S*100)+"%";
+  const rows=[["Outgoing text","exit",0,P.fadeOut],["Outgoing art","exit",0,P.slideDur],["Incoming art","enter",0,P.slideDur],["Pagination dot","mark",P.dotAt,0],
+    ["Title","enter",P.textStart,P.textDur],["Episode line","enter",P.textStart+P.stagger,P.textDur],["Description","enter",P.textStart+2*P.stagger,P.textDur],["CTA","enter",P.textStart+3*P.stagger,P.textDur]];
+  rows.forEach(([l,c,s,d])=>{const r=document.createElement("div");r.className="row";
+    r.innerHTML='<span class="lab"></span><div class="track"><div class="blk '+(c==="mark"?"state mark":c)+'"></div></div>';
+    r.querySelector(".lab").textContent=l;const g=r.querySelector(".blk");g.style.left=pct(s);if(d)g.style.width=pct(d);tl.insertBefore(r,ph)});
+  const tk=$("ticks");tk.innerHTML="";for(let v=0;v<=S;v+=S>1200?300:150){const e=document.createElement("span");e.style.left=pct(v);e.textContent=v+(v===0?"ms":"");tk.appendChild(e)}
+  $("slide-cap").textContent="~"+P.slideDur+"ms transition";
+  writeSpec();
+}
+/* Playhead sweeps the timeline in step with each slide transition (Slide view only) */
+let sweepRaf=null;
+function sweep(total){
+  cancelAnimationFrame(sweepRaf);
+  const track=tl.querySelector(".track");if($("extras").hidden||!track)return;
+  const S=span(),t0=performance.now(),x0=track.getBoundingClientRect().left-tl.getBoundingClientRect().left,w=track.clientWidth;
+  ph.style.opacity=1;
+  const step=now=>{const e=Math.min(now-t0,total);ph.style.left=(x0+e/S*w)+"px";if(e<total)sweepRaf=requestAnimationFrame(step);else setTimeout(()=>ph.style.opacity=0,600)};
+  sweepRaf=requestAnimationFrame(step);
+}
+
+/* Timing fields */
+FIELDS.forEach(([key,label,unit])=>{
+  const f=document.createElement("div");f.className="f";const id="f_"+key;
+  if(unit==="ease"){f.innerHTML='<label for="'+id+'"></label><select id="'+id+'">'+Object.keys(EASES).map(e=>'<option>'+e+'</option>').join("")+'</select>'}
+  else{f.innerHTML='<label for="'+id+'"></label><input id="'+id+'" type="number" '+(unit==="x"?'step="0.05" min="0" max="1"':'step="10" min="0" max="3000"')+'>'}
+  f.querySelector("label").textContent=label+(unit!=="ease"?" ("+unit+")":"");
+  const inp=f.querySelector("input,select");inp.value=P[key];
+  inp.addEventListener("input",()=>{P[key]=unit==="ease"?inp.value:(+inp.value||0);drawTL()});
+  $("fields").appendChild(f);
+});
+
+/* Motion spec text, written from the current timings */
+function writeSpec(){
+  const dim=+P.dimTo<1?" Outgoing art dims to "+Math.round(P.dimTo*100)+"%.":"";
+  $("spec").textContent=
+"Hero carousel motion (CTV)\n\n"+
+"* Advance: D-pad left/right, or auto every "+(DWELL/1000)+"s, using the same transition. Auto pauses when focus leaves the hero; a press resets the timer. Wraps last to first.\n"+
+"* Slide ("+P.slideDur+"ms, "+EASES[P.slideEase]+"): Outgoing and incoming art move together one screen width, right to left on Next and reversed on Prev."+dim+"\n"+
+"* Text: Outgoing text fades out over "+P.fadeOut+"ms. Incoming title, episode, description and CTA fade in from "+P.travel+"px offset starting at "+P.textStart+"ms, "+P.textDur+"ms each, staggered "+P.stagger+"ms.\n"+
+"* Dots: Switch at "+P.dotAt+"ms, no animation.\n"+
+"* Static: Nav, gradients and rows.\n"+
+"* Interrupts: A press mid-transition jumps to the end state, then transitions.\n"+
+"* Reduced motion: 300ms crossfade.";
+}
+$("reset").addEventListener("click",()=>{P=Object.assign({},DEF);FIELDS.forEach(([k])=>{$("f_"+k).value=P[k]});drawTL()});
+$("copy").addEventListener("click",()=>{const t=$("spec").textContent;
+  navigator.clipboard.writeText(t).then(()=>{$("copy").textContent="Copied"},()=>{const r=document.createRange();r.selectNodeContents($("spec"));getSelection().removeAllRanges();getSelection().addRange(r);$("copy").textContent="Selected"}).finally(()=>setTimeout(()=>$("copy").textContent="Copy",1500))});
 document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{
   const v=b.dataset.view;if(location.hash!=="#"+v)location.hash=v;else setView(v);
 }));
@@ -213,7 +332,7 @@ setView(location.hash.slice(1));
 
 $("next").onclick=()=>go(1);$("prev").onclick=()=>go(-1);
 $("auto").onchange=resetAuto;
-document.addEventListener("keydown",e=>{if(e.target.matches("input"))return;
+document.addEventListener("keydown",e=>{if(e.target.matches("input,select"))return;
   if(e.key==="ArrowRight"){e.preventDefault();go(1)}if(e.key==="ArrowLeft"){e.preventDefault();go(-1)}});
 resetAuto();
 </script>
