@@ -32,9 +32,12 @@ Some prototypes live in other repos and are linked by full URL:
      color: "periwinkle",         // the category's color, see below
      href: "ctv-nav-focus/",      // folder in this repo, or a full URL
      desc: "One or two sentences.",
-     tags: ["Navigation", "Focus"] // any number of topic tags
+     tags: ["Navigation", "Focus"], // any number of topic tags
+     archived: true               // optional; moves the card to the Archived section
    }
    ```
+
+   The `date` only controls ordering. If Mary wants a card placed somewhere specific in the list, adjust its date to sort there.
 
 3. Preview it, then publish using the workflow below.
 
@@ -51,7 +54,7 @@ If a fifth product is needed, add a new color to both themes (see Styling) inste
 
 ## Rules
 
-- **Never rename or delete a prototype folder after its link has been shared.** The folder name is part of the URL. To retire a prototype, remove its card and keep the folder.
+- **Never rename or delete a prototype folder after its link has been shared.** The folder name is part of the URL. To retire a prototype, set `archived: true` so it moves to the Archived section. Remove the card only if Mary asks, and keep the folder either way.
 - **To keep an old version visible,** add it as a subfolder, e.g. `hero-motion-comparison/v2/`, rather than overwriting the original.
 - **This repo and site are public.** Don't add anything that shouldn't be on the open internet. That includes unreleased program content or air dates, internal or personal data, credentials, and third-party artwork or show key art PBS may not have rights to share. If in doubt, ask Mary first.
 - **Don't commit font files or logos.** PBS Sans is licensed, so the page lists it in the font stack and relies on it being installed locally, with Helvetica Neue as the fallback.

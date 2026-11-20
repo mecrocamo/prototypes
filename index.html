@@ -165,6 +165,12 @@
   .card:hover{transform:translateY(-4px);background:var(--panel-hover);
     box-shadow:var(--shadow-lift), inset 0 0 0 1.5px var(--c-trim)}
 
+  /* Archived section: quieter, outlined cards that fill in on hover */
+  .archive{margin-top:24px}
+  .archive .count{margin-top:40px}
+  .card.is-archived{background:transparent;box-shadow:inset 0 0 0 1px var(--line)}
+  .card.is-archived:hover{background:var(--panel-hover);box-shadow:var(--shadow-lift), inset 0 0 0 1.5px var(--c-trim)}
+
   .kicker{align-self:flex-start;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
     color:var(--c-ink);background:var(--c);border-radius:36px;padding:6px 12px}
 
@@ -233,6 +239,11 @@
 
     <div class="count" id="count"></div>
     <div class="cards" id="cards"></div>
+
+    <section class="archive" id="archive" hidden>
+      <h2 class="count" id="archiveCount"></h2>
+      <div class="cards" id="archiveCards"></div>
+    </section>
   </main>
 
   <footer class="pagefoot">
@@ -251,34 +262,37 @@
         href   — a folder in this repo (e.g. "my-prototype/") or a full URL
         desc   — one or two sentences
         tags   — any number of topic tags, e.g. ["Motion", "Navigation"]
+        archived — optional; true moves the card to the Archived section
     */
     var PROTOTYPES = [
       {
-        date: "2026-08-28",
+        date: "2026-07-20",
         title: "TeamCraft + Design Skills",
         kicker: "Design Ops",
         color: "marigold",
         href: "https://mecrocamo.github.io/starman-mary/teamcraft.html",
         desc: "The end-to-end team workflow, mapped across six phases from team setup through continuous improvement: the existing TeamCraft skills plus the proposed design skills.",
-        tags: ["Workflow", "Skills"]
+        tags: ["Workflow", "Skills"],
+        archived: true
       },
       {
-        date: "2026-09-04",
+        date: "2026-08-01",
         title: "Design Versioning Playbook",
         kicker: "Design Ops",
         color: "marigold",
         href: "https://mecrocamo.github.io/starman-mary/versioning.html",
         desc: "How the design team names, saves, branches, and hands off work in Figma: file structure, named versions, branching rules, annotations, and a 30-day rollout.",
-        tags: ["Figma", "Versioning"]
+        tags: ["Workflow"]
       },
       {
-        date: "2026-09-09",
+        date: "2026-07-25",
         title: "VPPA Consent Modal",
         kicker: "CTV",
         color: "periwinkle",
         href: "https://mecrocamo.github.io/starman-mary/vppa-consent-modal/",
         desc: "The CTV privacy-consent modal built as one source of truth, with design tokens and a component spec that port to HTML smart TVs, tvOS, Android TV, and Roku.",
-        tags: ["Privacy", "Components", "Design tokens"]
+        tags: ["Workflow", "Design Systems"],
+        archived: true
       },
       {
         date: "2026-08-06",
@@ -304,15 +318,24 @@
       function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
       var arrow='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
-      var list=PROTOTYPES.slice().sort(function(a,b){ return a.date<b.date?1:a.date>b.date?-1:0; });
-      document.getElementById("count").textContent=list.length+(list.length===1?" prototype":" prototypes")+" · newest first";
-      document.getElementById("cards").innerHTML=list.map(function(p){
-        return '<a class="card '+esc(p.color||"periwinkle")+'" href="'+esc(p.href)+'">'+
+      function card(p){
+        return '<a class="card '+esc(p.color||"periwinkle")+(p.archived?' is-archived':'')+'" href="'+esc(p.href)+'">'+
           '<span class="kicker">'+esc(p.kicker)+'</span>'+
           '<h2>'+esc(p.title)+'</h2><p>'+esc(p.desc)+'</p>'+
           '<div class="foot"><ul class="tags">'+(p.tags||[]).map(function(t){ return '<li class="tag">'+esc(t)+'</li>'; }).join("")+'</ul>'+
           '<span class="go" aria-hidden="true">Open '+arrow+'</span></div></a>';
-      }).join("");
+      }
+      var sorted=PROTOTYPES.slice().sort(function(a,b){ return a.date<b.date?1:a.date>b.date?-1:0; });
+      var active=sorted.filter(function(p){ return !p.archived; });
+      var archived=sorted.filter(function(p){ return p.archived; });
+
+      document.getElementById("count").textContent=active.length+(active.length===1?" prototype":" prototypes")+" · newest first";
+      document.getElementById("cards").innerHTML=active.map(card).join("");
+      if(archived.length){
+        document.getElementById("archiveCount").textContent="Archived · "+archived.length;
+        document.getElementById("archiveCards").innerHTML=archived.map(card).join("");
+        document.getElementById("archive").hidden=false;
+      }
 
       var btn=document.getElementById("themeBtn");
       function stored(){ try{ return localStorage.getItem("proto-theme"); }catch(e){ return null; } }
