@@ -165,10 +165,12 @@
   .card:hover{transform:translateY(-4px);background:var(--panel-hover);
     box-shadow:var(--shadow-lift), inset 0 0 0 1.5px var(--c-trim)}
 
-  /* Archived section: quieter, outlined cards that fill in on hover */
+  /* Archived section: quieter cards filled halfway between the page and an active card,
+     so the same rule works in both themes and both modes */
   .archive{margin-top:24px}
   .archive .count{margin-top:40px}
-  .card.is-archived{background:transparent;box-shadow:inset 0 0 0 1px var(--line)}
+  .card.is-archived{background:var(--bg);background:color-mix(in srgb, var(--panel) 50%, var(--bg));
+    box-shadow:inset 0 0 0 1px var(--line)}
   .card.is-archived:hover{background:var(--panel-hover);box-shadow:var(--shadow-lift), inset 0 0 0 1.5px var(--c-trim)}
 
   .kicker{align-self:flex-start;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
