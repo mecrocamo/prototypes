@@ -12,8 +12,18 @@
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
 
-  /* Palette taken from marycrocamo.com */
+  /* ============================================================
+     PERSONAL THEME (default) — palette and type from marycrocamo.com
+     ============================================================ */
   :root{
+    --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-wordmark:"Dela Gothic One",sans-serif; --w-wordmark:400; --wordmark-spacing:.025em;
+    --f-serif:"Crimson Pro",Georgia,serif; --serif-spacing:-.02em;
+    --f-mono:"Fragment Mono",ui-monospace,Menlo,monospace;
+    --w-h1:900; --w-h2:300; --w-body:500;
+    --lede-size:21px; --desc-size:18px;
+    --tag-size:12px; --tag-case:none; --tag-spacing:.02em; --w-tag:400;
+    --radius:24px; --selection:#FDE6A6; --selection-ink:#030128;
     --bg:#EBE4E1; --panel:#F4F2EF; --panel-hover:#F9F8F5;
     --ink:#030128; --ink-2:#4D4C49; --ink-3:#827C6A;
     --line:rgba(3,1,40,.10);
@@ -55,34 +65,92 @@
     --blush:#352822;      --blush-trim:#D9B49B;      --blush-ink:#ECCDB9;
   }
 
+  /* ============================================================
+     PBS THEME — colors and type from the PBS brand guidelines.
+     PBS Sans is used when it's installed on the viewer's computer
+     (it isn't hosted here); otherwise the brand fallback,
+     Helvetica Neue / Helvetica, is used.
+     Light: white and Cloud surfaces, Navy text, PBS Blue buttons.
+     Dark: Navy and Medium Blue surfaces, white text, Teal labels.
+     ============================================================ */
+  :root[data-brand="pbs"]{
+    --f-body:"PBS Sans","PBSSans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --f-wordmark:var(--f-body); --w-wordmark:900; --wordmark-spacing:.04em;
+    --f-serif:var(--f-body); --serif-spacing:0;
+    --f-mono:var(--f-body);
+    --w-h1:900; --w-h2:700; --w-body:400;
+    --lede-size:20px; --desc-size:16px;
+    --tag-size:11px; --tag-case:uppercase; --tag-spacing:.12em; --w-tag:700;
+    --radius:16px; --selection:#FFCF00; --selection-ink:#0A145A;
+
+    --bg:#F6F8FA; --panel:#FFFFFF; --panel-hover:#FFFFFF;
+    --ink:#0A145A; --ink-2:#0A145A; --ink-3:#2638C4;
+    --line:rgba(10,20,90,.12);
+    --btn:#2638C4; --btn-ink:#FFFFFF;
+    --shadow:0 1px 2px rgba(10,20,90,.08), 0 4px 14px rgba(10,20,90,.06);
+    --shadow-lift:0 6px 18px rgba(10,20,90,.12), 0 22px 48px rgba(10,20,90,.12);
+    --focus:#2638C4;
+    /* Category colors map to the brand accents (chip background = trim) */
+    --periwinkle:#486CD8; --periwinkle-trim:#486CD8; --periwinkle-ink:#FFFFFF;
+    --coral:#FE704E;      --coral-trim:#FE704E;      --coral-ink:#0A145A;
+    --marigold:#FFCF00;   --marigold-trim:#FFCF00;   --marigold-ink:#0A145A;
+    --blush:#48D3CD;      --blush-trim:#48D3CD;      --blush-ink:#0A145A;
+  }
+  @media (prefers-color-scheme:dark){
+    :root[data-brand="pbs"]:not([data-theme="light"]){
+      --bg:#0A145A; --panel:#0F1E8C; --panel-hover:#0F1E8C;
+      --ink:#FFFFFF; --ink-2:#FFFFFF; --ink-3:#48D3CD;
+      --line:rgba(255,255,255,.16);
+      --btn:#FFFFFF; --btn-ink:#0A145A;
+      --shadow:0 1px 2px rgba(0,0,0,.3); --shadow-lift:0 18px 46px rgba(0,0,0,.45);
+      --focus:#FFCF00;
+    }
+  }
+  :root[data-brand="pbs"][data-theme="dark"]{
+    --bg:#0A145A; --panel:#0F1E8C; --panel-hover:#0F1E8C;
+    --ink:#FFFFFF; --ink-2:#FFFFFF; --ink-3:#48D3CD;
+    --line:rgba(255,255,255,.16);
+    --btn:#FFFFFF; --btn-ink:#0A145A;
+    --shadow:0 1px 2px rgba(0,0,0,.3); --shadow-lift:0 18px 46px rgba(0,0,0,.45);
+    --focus:#FFCF00;
+  }
+
   body{
-    font-family:"Inter",system-ui,-apple-system,Segoe UI,sans-serif;
-    font-optical-sizing:auto; font-weight:500;
+    font-family:var(--f-body);
+    font-optical-sizing:auto; font-weight:var(--w-body);
     background:var(--bg); color:var(--ink);
     line-height:1.5; -webkit-font-smoothing:antialiased; min-height:100vh;
     display:flex; flex-direction:column;
   }
-  ::selection{background:#FDE6A6;color:#030128}
+  ::selection{background:var(--selection);color:var(--selection-ink)}
   :focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:12px}
   a{color:inherit}
 
   /* ---- nav ---- */
   .nav{width:100%;max-width:1040px;margin:0 auto;padding:28px 24px 0;
     display:flex;justify-content:space-between;align-items:center;gap:16px}
-  .wordmark{font-family:"Dela Gothic One",sans-serif;font-size:20px;letter-spacing:.025em;
-    line-height:1.15;text-decoration:none;display:flex;flex-direction:column}
-  .wordmark .sub{font-family:"Inter",sans-serif;font-size:11px;font-weight:600;
+  .wordmark{font-family:var(--f-wordmark);font-weight:var(--w-wordmark);font-size:20px;letter-spacing:var(--wordmark-spacing);
+    line-height:1.15;text-decoration:none;display:flex;flex-direction:column;white-space:nowrap}
+  .wordmark .sub{font-family:var(--f-body);font-size:11px;font-weight:600;
     letter-spacing:.34em;color:var(--ink-2);margin-top:3px}
+  .tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
   .toolbtn{font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;flex-shrink:0;
     background:transparent;border:1.5px solid var(--ink);border-radius:100px;padding:8px 16px}
   .toolbtn:hover{background:var(--ink);color:var(--bg)}
+
+  /* Personal | PBS style switch */
+  .seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:100px;padding:2px}
+  .seg button{font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;
+    background:transparent;border:0;border-radius:100px;padding:6px 14px}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+  .seg button:not([aria-pressed="true"]):hover{background:var(--line)}
 
   .wrap{width:100%;max-width:1040px;margin:0 auto;padding:44px 24px 64px;flex:1;
     display:flex;flex-direction:column}
 
   /* ---- masthead ---- */
-  h1{font-weight:900;font-size:60px;line-height:1;letter-spacing:-.01em;text-wrap:balance}
-  .lede{font-family:"Crimson Pro",Georgia,serif;font-size:21px;letter-spacing:-.02em;line-height:1.5;
+  h1{font-weight:var(--w-h1);font-size:60px;line-height:1;letter-spacing:-.01em;text-wrap:balance}
+  .lede{font-family:var(--f-serif);font-size:var(--lede-size);letter-spacing:var(--serif-spacing);line-height:1.5;
     color:var(--ink-2);max-width:52ch;margin-top:18px}
 
   /* ---- list ---- */
@@ -90,7 +158,7 @@
     color:var(--ink-2);margin-top:44px;padding-bottom:14px;border-bottom:1px solid var(--line)}
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
   .card{position:relative;display:flex;flex-direction:column;text-decoration:none;overflow:hidden;
-    background:var(--panel);border-radius:24px;padding:30px 28px 24px;
+    background:var(--panel);border-radius:var(--radius);padding:30px 28px 24px;
     box-shadow:var(--shadow);
     transition:transform .2s ease, box-shadow .2s ease, background-color .2s ease}
   .card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--c-trim)}
@@ -101,8 +169,8 @@
   .kicker{align-self:flex-start;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
     color:var(--c-ink);background:var(--c);border-radius:36px;padding:6px 12px}
 
-  .card h2{font-weight:300;font-size:32px;line-height:1.1;letter-spacing:-.01em;margin-top:22px;text-wrap:balance}
-  .card p{font-family:"Crimson Pro",Georgia,serif;font-size:18px;letter-spacing:-.01em;line-height:1.45;
+  .card h2{font-weight:var(--w-h2);font-size:32px;line-height:1.1;letter-spacing:-.01em;margin-top:22px;text-wrap:balance}
+  .card p{font-family:var(--f-serif);font-size:var(--desc-size);letter-spacing:var(--serif-spacing);line-height:1.45;
     color:var(--ink-2);margin-top:12px;flex:1}
 
   .foot{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:24px}
@@ -112,7 +180,8 @@
 
   /* topic tags — quiet mono labels (Fragment Mono, as on marycrocamo.com) */
   .tags{display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;list-style:none;padding-bottom:9px}
-  .tag{font-family:"Fragment Mono",ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.02em;color:var(--ink-3)}
+  .tag{font-family:var(--f-mono);font-size:var(--tag-size);font-weight:var(--w-tag);
+    letter-spacing:var(--tag-spacing);text-transform:var(--tag-case);color:var(--ink-3)}
   .tag+.tag::before{content:"·";margin:0 8px}
   .go svg{transition:transform .2s ease}
   .card:hover .go svg{transform:translateX(3px)}
@@ -133,15 +202,31 @@
     .cards{grid-template-columns:1fr;gap:16px}
     .card{padding:24px 20px 20px}
     .card h2{font-size:28px}
-    .card p{font-size:17px}
+    .card p{font-size:calc(var(--desc-size) - 1px)}
+    .nav{align-items:flex-start}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+<script>
+  /* Apply the saved style before the page draws, so it doesn't flash */
+  (function(){
+    var b=null;
+    try{ b=new URLSearchParams(location.search).get("style"); }catch(e){}
+    if(b!=="pbs"&&b!=="personal"){ try{ b=localStorage.getItem("proto-brand"); }catch(e){} }
+    if(b==="pbs") document.documentElement.setAttribute("data-brand","pbs");
+  })();
+</script>
 </head>
 <body>
   <header class="nav">
     <a class="wordmark" href="./">MARY CROCAMO<span class="sub">WORKBENCH</span></a>
-    <button class="toolbtn" id="themeBtn" type="button">◑ Theme</button>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Style">
+        <button type="button" data-brand-opt="personal" aria-pressed="true">Personal</button>
+        <button type="button" data-brand-opt="pbs" aria-pressed="false">PBS</button>
+      </div>
+      <button class="toolbtn" id="themeBtn" type="button">◑ Theme</button>
+    </div>
   </header>
 
   <main class="wrap">
@@ -208,6 +293,18 @@
         return (window.matchMedia&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light";
       }
       var s=stored(); if(s) document.documentElement.setAttribute("data-theme",s);
+
+      /* Personal | PBS style switch (remembered per viewer; ?style=pbs in the URL forces it) */
+      var segBtns=[].slice.call(document.querySelectorAll("[data-brand-opt]"));
+      function setBrand(b, save){
+        if(b==="pbs") document.documentElement.setAttribute("data-brand","pbs");
+        else document.documentElement.removeAttribute("data-brand");
+        segBtns.forEach(function(x){ x.setAttribute("aria-pressed", String(x.getAttribute("data-brand-opt")===(b==="pbs"?"pbs":"personal"))); });
+        if(save){ try{ localStorage.setItem("proto-brand", b); }catch(e){} }
+      }
+      setBrand(document.documentElement.getAttribute("data-brand")==="pbs"?"pbs":"personal", false);
+      segBtns.forEach(function(x){ x.addEventListener("click",function(){ setBrand(x.getAttribute("data-brand-opt"), true); }); });
+
       btn.addEventListener("click",function(){
         var next=current()==="dark"?"light":"dark";
         document.documentElement.setAttribute("data-theme",next);
