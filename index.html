@@ -297,7 +297,7 @@
       function setBrand(b, save){
         if(b==="pbs") document.documentElement.setAttribute("data-brand","pbs");
         else document.documentElement.removeAttribute("data-brand");
-        styleBtn.textContent = b==="pbs" ? "Un-PBS-ify this page" : "PBS-ify this page";
+        styleBtn.textContent = b==="pbs" ? "Make it Mary" : "PBS-ify this page";
         if(save){ try{ localStorage.setItem("proto-brand", b); }catch(e){} }
       }
       setBrand(isPbs()?"pbs":"personal", false);
