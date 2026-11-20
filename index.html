@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Prototypes</title>
+<meta name="description" content="Ongoing design prototypes, newest first.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400&family=Dela+Gothic+One&family=Fragment+Mono&family=Inter:opsz,wght@14..32,300;14..32,500;14..32,600;14..32,900&display=swap">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+
+  /* Palette taken from marycrocamo.com */
+  :root{
+    --bg:#EBE4E1; --panel:#F4F2EF; --panel-hover:#F9F8F5;
+    --ink:#030128; --ink-2:#4D4C49; --ink-3:#827C6A;
+    --line:rgba(3,1,40,.10);
+    --btn:#030128; --btn-ink:#F4F2EF; --tag-bg:#FFFFFF;
+    --shadow:0 1px 2px rgba(125,96,96,.10), 0 4px 14px rgba(125,96,96,.08);
+    --shadow-lift:0 6px 18px rgba(125,96,96,.16), 0 22px 48px rgba(125,96,96,.14);
+    --focus:#4F63B8;
+    /* Accents: a soft chalk palette (blush, coral, marigold, periwinkle).
+       --x: chip background · --x-trim: card trim + hover outline · --x-ink: chip text */
+    --periwinkle:#DFE5FB; --periwinkle-trim:#8FA0DF; --periwinkle-ink:#43559F;
+    --coral:#FFE1D3;      --coral-trim:#FF8B5E;      --coral-ink:#A63D16;
+    --marigold:#FCEBC2;   --marigold-trim:#E8AE3A;   --marigold-ink:#7D560B;
+    --blush:#F5E3D9;      --blush-trim:#D9B49B;      --blush-ink:#7A5038;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#0B0A1C; --panel:#16152B; --panel-hover:#1D1C36;
+      --ink:#F1F0F7; --ink-2:#BEBCD2; --ink-3:#8D8BA8;
+      --line:rgba(241,240,247,.10);
+      --btn:#F1F0F7; --btn-ink:#030128; --tag-bg:rgba(244,242,239,.08);
+      --shadow:0 1px 2px rgba(0,0,0,.4); --shadow-lift:0 18px 46px rgba(0,0,0,.55);
+      --focus:#A9B6EC;
+    --periwinkle:#262C4A; --periwinkle-trim:#8FA0DF; --periwinkle-ink:#C3CDF5;
+    --coral:#3D2219;      --coral-trim:#FF8B5E;      --coral-ink:#FFBC9F;
+    --marigold:#3A2E14;   --marigold-trim:#E8AE3A;   --marigold-ink:#F7D58A;
+    --blush:#352822;      --blush-trim:#D9B49B;      --blush-ink:#ECCDB9;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B0A1C; --panel:#16152B; --panel-hover:#1D1C36;
+    --ink:#F1F0F7; --ink-2:#BEBCD2; --ink-3:#8D8BA8;
+    --line:rgba(241,240,247,.10);
+    --btn:#F1F0F7; --btn-ink:#030128; --tag-bg:rgba(244,242,239,.08);
+    --shadow:0 1px 2px rgba(0,0,0,.4); --shadow-lift:0 18px 46px rgba(0,0,0,.55);
+    --focus:#A9B6EC;
+    --periwinkle:#262C4A; --periwinkle-trim:#8FA0DF; --periwinkle-ink:#C3CDF5;
+    --coral:#3D2219;      --coral-trim:#FF8B5E;      --coral-ink:#FFBC9F;
+    --marigold:#3A2E14;   --marigold-trim:#E8AE3A;   --marigold-ink:#F7D58A;
+    --blush:#352822;      --blush-trim:#D9B49B;      --blush-ink:#ECCDB9;
+  }
+
+  body{
+    font-family:"Inter",system-ui,-apple-system,Segoe UI,sans-serif;
+    font-optical-sizing:auto; font-weight:500;
+    background:var(--bg); color:var(--ink);
+    line-height:1.5; -webkit-font-smoothing:antialiased; min-height:100vh;
+    display:flex; flex-direction:column;
+  }
+  ::selection{background:#FDE6A6;color:#030128}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:12px}
+  a{color:inherit}
+
+  /* ---- nav ---- */
+  .nav{width:100%;max-width:1040px;margin:0 auto;padding:28px 24px 0;
+    display:flex;justify-content:space-between;align-items:center;gap:16px}
+  .wordmark{font-family:"Dela Gothic One",sans-serif;font-size:20px;letter-spacing:.025em;
+    line-height:1.15;text-decoration:none;display:flex;flex-direction:column}
+  .wordmark .sub{font-family:"Inter",sans-serif;font-size:11px;font-weight:600;
+    letter-spacing:.34em;color:var(--ink-2);margin-top:3px}
+  .toolbtn{font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;flex-shrink:0;
+    background:transparent;border:1.5px solid var(--ink);border-radius:100px;padding:8px 16px}
+  .toolbtn:hover{background:var(--ink);color:var(--bg)}
+
+  .wrap{width:100%;max-width:1040px;margin:0 auto;padding:44px 24px 64px;flex:1;
+    display:flex;flex-direction:column}
+
+  /* ---- masthead ---- */
+  h1{font-weight:900;font-size:60px;line-height:1;letter-spacing:-.01em;text-wrap:balance}
+  .lede{font-family:"Crimson Pro",Georgia,serif;font-size:21px;letter-spacing:-.02em;line-height:1.5;
+    color:var(--ink-2);max-width:52ch;margin-top:18px}
+
+  /* ---- list ---- */
+  .count{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-2);margin-top:44px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+  .card{position:relative;display:flex;flex-direction:column;text-decoration:none;overflow:hidden;
+    background:var(--panel);border-radius:24px;padding:30px 28px 24px;
+    box-shadow:var(--shadow);
+    transition:transform .2s ease, box-shadow .2s ease, background-color .2s ease}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--c-trim)}
+  /* hover outline drawn as an inset shadow so no border gap shows around the trim */
+  .card:hover{transform:translateY(-4px);background:var(--panel-hover);
+    box-shadow:var(--shadow-lift), inset 0 0 0 1.5px var(--c-trim)}
+
+  .kicker{align-self:flex-start;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--c-ink);background:var(--c);border-radius:36px;padding:6px 12px}
+
+  .card h2{font-weight:300;font-size:32px;line-height:1.1;letter-spacing:-.01em;margin-top:22px;text-wrap:balance}
+  .card p{font-family:"Crimson Pro",Georgia,serif;font-size:18px;letter-spacing:-.01em;line-height:1.45;
+    color:var(--ink-2);margin-top:12px;flex:1}
+
+  .foot{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:24px}
+  .go{display:inline-flex;align-items:center;gap:8px;flex-shrink:0;
+    font-size:14px;font-weight:600;color:var(--btn-ink);background:var(--btn);
+    border-radius:100px;padding:9px 16px}
+
+  /* topic tags — quiet mono labels (Fragment Mono, as on marycrocamo.com) */
+  .tags{display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;list-style:none;padding-bottom:9px}
+  .tag{font-family:"Fragment Mono",ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.02em;color:var(--ink-3)}
+  .tag+.tag::before{content:"·";margin:0 8px}
+  .go svg{transition:transform .2s ease}
+  .card:hover .go svg{transform:translateX(3px)}
+
+  .periwinkle{--c:var(--periwinkle);--c-trim:var(--periwinkle-trim);--c-ink:var(--periwinkle-ink)}
+  .coral{--c:var(--coral);--c-trim:var(--coral-trim);--c-ink:var(--coral-ink)}
+  .marigold{--c:var(--marigold);--c-trim:var(--marigold-trim);--c-ink:var(--marigold-ink)}
+  .blush{--c:var(--blush);--c-trim:var(--blush-trim);--c-ink:var(--blush-ink)}
+
+
+  @media (max-width:760px){
+    .nav{padding:20px 16px 0}
+    .wordmark{font-size:17px}
+    .wrap{padding:48px 16px 44px}
+    h1{font-size:44px}
+    .lede{font-size:19px}
+    .count{margin-top:44px}
+    .cards{grid-template-columns:1fr;gap:16px}
+    .card{padding:24px 20px 20px}
+    .card h2{font-size:28px}
+    .card p{font-size:17px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+  <header class="nav">
+    <a class="wordmark" href="./">MARY CROCAMO<span class="sub">WORKBENCH</span></a>
+    <button class="toolbtn" id="themeBtn" type="button">◑ Theme</button>
+  </header>
+
+  <main class="wrap">
+    <h1>Design Prototypes</h1>
+    <p class="lede">Home for ongoing design prototypes. Everything here is an unfinished work in progress.</p>
+
+    <div class="count" id="count"></div>
+    <div class="cards" id="cards"></div>
+  </main>
+
+  <script>
+    /*
+      ADD A PROTOTYPE: add one entry to this list. Order doesn't matter;
+      the page sorts by date, newest first. The date isn't shown.
+        date   — "YYYY-MM-DD", used only for ordering
+        title  — card heading
+        kicker — the one product category (e.g. "CTV", "Consoles")
+        color  — the category's color: "periwinkle", "coral", "marigold" or "blush".
+                 Keep each product on the same color.
+        href   — a folder in this repo (e.g. "my-prototype/") or a full URL
+        desc   — one or two sentences
+        tags   — any number of topic tags, e.g. ["Motion", "Navigation"]
+    */
+    var PROTOTYPES = [
+      {
+        date: "2026-08-06",
+        title: "Moods in Media Manager",
+        kicker: "Consoles",
+        color: "coral",
+        href: "https://mecrocamo.github.io/personalization/",
+        desc: "V2 mockups for adding moods to shows in the PBS Console's Media Manager: core data and moods, auto-applied details, and editing moods, with pattern notes.",
+        tags: ["Personalization"]
+      },
+      {
+        date: "2026-11-20",
+        title: "CTV Hero Motion Comparison",
+        kicker: "CTV",
+        color: "periwinkle",
+        href: "hero-motion-comparison/",
+        desc: "Crossfade vs. slide transitions for the CTV home hero carousel at 1920×1080. Watch them side by side or one at a time, with auto-advance and the timing for each.",
+        tags: ["Motion"]
+      }
+    ];
+
+    (function(){
+      function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+      var arrow='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+      var list=PROTOTYPES.slice().sort(function(a,b){ return a.date<b.date?1:a.date>b.date?-1:0; });
+      document.getElementById("count").textContent=list.length+(list.length===1?" prototype":" prototypes")+" · newest first";
+      document.getElementById("cards").innerHTML=list.map(function(p){
+        return '<a class="card '+esc(p.color||"periwinkle")+'" href="'+esc(p.href)+'">'+
+          '<span class="kicker">'+esc(p.kicker)+'</span>'+
+          '<h2>'+esc(p.title)+'</h2><p>'+esc(p.desc)+'</p>'+
+          '<div class="foot"><ul class="tags">'+(p.tags||[]).map(function(t){ return '<li class="tag">'+esc(t)+'</li>'; }).join("")+'</ul>'+
+          '<span class="go" aria-hidden="true">Open '+arrow+'</span></div></a>';
+      }).join("");
+
+      var btn=document.getElementById("themeBtn");
+      function stored(){ try{ return localStorage.getItem("proto-theme"); }catch(e){ return null; } }
+      function current(){
+        var t=document.documentElement.getAttribute("data-theme");
+        if(t) return t;
+        return (window.matchMedia&&matchMedia("(prefers-color-scheme:dark)").matches)?"dark":"light";
+      }
+      var s=stored(); if(s) document.documentElement.setAttribute("data-theme",s);
+      btn.addEventListener("click",function(){
+        var next=current()==="dark"?"light":"dark";
+        document.documentElement.setAttribute("data-theme",next);
+        try{ localStorage.setItem("proto-theme",next); }catch(e){}
+      });
+    })();
+  </script>
+</body>
+</html>
