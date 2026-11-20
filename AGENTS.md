@@ -73,7 +73,7 @@ Then open http://localhost:8765/. Check both themes, light and dark mode, and ph
 
 ## Git workflow
 
-Mary is learning git, so explain each step in plain language.
+Mary is re-learning git, so explain each step in plain language.
 
 1. **Start from an up-to-date `main`:** `git switch main && git pull --ff-only`.
 2. **Create a branch** for the change, with a short kebab-case name like `add-ctv-nav-prototype`.
